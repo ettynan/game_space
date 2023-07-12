@@ -129,5 +129,5 @@ class Enemy:
         self.y = y
         self.w = ENEMY_WIDTH
         self.h = ENEMY_HEIGHT
-        self.dir = 1
+        self.dir = 11
 
