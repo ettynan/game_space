@@ -2,6 +2,10 @@
 
 from random import random
 import pyxel
+from data.logger import get_logger
+
+# User interface
+_log = get_logger(__name__)
 
 SCENE_TITLE = 0
 SCENE_PLAY = 1
@@ -92,9 +96,9 @@ class Player:
         if pyxel.btn(pyxel.KEY_DOWN):
             self.y += PLAYER_SPEED
         self.x = max(self.x, 0)
-        self.x = min(self.x, pyxel.width - self.x)
+        self.x = min(self.x, pyxel.width - self.w)
         self.y = max(self.y, 0)
-        self.y = min(self.x, pyxel.height - self.y)
+        self.y = min(self.y, pyxel.height - self.h)
 
         if pyxel.btnp(pyxel.KEY_SPACE):
             Bullet(self.x + (PLAYER_WIDTH - BULLET_WIDTH)/ 2,
@@ -102,12 +106,14 @@ class Player:
 
             pyxel.play(0, 0)
 
-        def draw(self):
-            '''Draws the updated player'''
-            pyxel.blt(self.x, self.y, 0, 0, 0, self.w, self.h, 0)
+    def draw(self):
+        '''Draws the updated player'''
+        _log.info("In player draw")
+        pyxel.blt(self.x, self.y, 0, 0, 0, self.w, self.h, 0)
 
 class Bullet:
     '''Bullet to shoot the invaders'''
+    _log.info("In bullet")
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -126,6 +132,7 @@ class Bullet:
 
     def draw(self):
         '''Draws the bullet in the updated position'''
+        _log.info("In bullet draw")
         pyxel.rect(self.x, self.y, self.w, self.h, BULLET_COLOR)
 
 class Enemy:
@@ -157,6 +164,7 @@ class Enemy:
 
     def draw(self):
         '''Draws the enemy in the new position'''
+        _log.info("In enemy draw")
         pyxel.blt(self.x, self.y, 0, 8, 0, self.w * self.dir, self.h, 0)
 
 class Blast:
@@ -184,7 +192,7 @@ class Blast:
 class App:
     '''Game window and game play'''
     def __init__(self):
-        pyxel.init(120, 160, caption="All your base are belong to us!")
+        pyxel.init(120, 160, title="All your base are belong to us!")
         pyxel.image(0).set(
             0,
             0,
@@ -217,9 +225,22 @@ class App:
         self.player = Player(pyxel.width/2, pyxel.height -20)
         pyxel.run(self.update, self.draw)
 
+    def update(self):
+        '''Update the background based on circumstance'''
+        if pyxel.btnp(pyxel.KEY_Q):
+            pyxel.quit()
+        self.background.update()
+
+        if self.scene == SCENE_TITLE:
+            self.update_title_scene()
+        elif self.scene == SCENE_PLAY:
+            self.update_play_scene()
+        elif self.scene == SCENE_GAMEOVER:
+            self.update_gameover_scene()
+
     def update_title_scene(self):
         '''Updates the title scene based on play'''
-        if pyxel.btnp(pyxel.KEY_ENTER):
+        if pyxel.btnp(pyxel.KEY_RETURN):
             self.scene = SCENE_PLAY
 
     def update_play_scene(self):
@@ -230,7 +251,7 @@ class App:
             for bullet in bullet_list:
                 # Determine if enemy hit by bullet
                 if (enemy.x + enemy.w > bullet.x
-                    and bullet.x + bullet.width > enemy.x
+                    and bullet.x + bullet.w > enemy.x
                     and enemy.y + enemy.h > bullet.y
                     and bullet.y + bullet.h > enemy.y):
                     enemy.alive = False
@@ -253,20 +274,61 @@ class App:
             update_list(bullet_list)
             update_list(enemy_list)
             update_list(blast_list)
-            cleanup_list(bullet_list)
             cleanup_list(enemy_list)
+            cleanup_list(bullet_list)
             cleanup_list(blast_list)
 
+    def update_gameover_scene(self):
+        '''Update game over scene'''
+        update_list(bullet_list)
+        update_list(enemy_list)
+        update_list(blast_list)
+        cleanup_list(enemy_list)
+        cleanup_list(bullet_list)
+        cleanup_list(blast_list)
+        if pyxel.btnp(pyxel.KEY_RETURN):
+            self.scene = SCENE_PLAY
+            self.player.x = pyxel.width/2
+            self.player.y = pyxel.height - 20
+            self.score = 0
+            enemy_list.clear()
+            bullet_list.clear()
+            blast_list.clear()
 
-    def update(self):
-        '''Update the background based on circumstance'''
-        if pyxel.btnp(pyxel.KEY_Q):
-            pyxel.quit()
-        self.background.update()
+    def draw(self):
+        '''Draw the scene based on circumstance'''
+        pyxel.cls(0)
+        self.background.draw()
 
         if self.scene == SCENE_TITLE:
-            self.update_title_scene()
+            self.draw_title_scene()
         elif self.scene == SCENE_PLAY:
-            self.update_play_scene()
+            self.draw_play_scene()
         elif self.scene == SCENE_GAMEOVER:
-            self.update_gameover_scene()
+            self.draw_gameover_scene()
+
+        pyxel.text(39, 4, "SCORE{:5}".format(self.score), 7)
+
+    def draw_title_scene(self):
+        '''Draw the initial title scene'''
+        pyxel.text(35, 66, "Start Game", pyxel.frame_count %16)
+        pyxel.text(31, 126, "- PRESS ENTER -", 13)
+
+    def draw_play_scene(self):
+        '''Prepare effects for game play'''
+        _log.info("Draw play scene")
+        self.player.draw()
+        draw_list(bullet_list)
+        draw_list(enemy_list)
+        draw_list(blast_list)
+
+    def draw_gameover_scene(self):
+        '''Prepare effects for gameover scene'''
+        draw_list(bullet_list)
+        draw_list(enemy_list)
+        draw_list(blast_list)
+        pyxel.text(43, 66, "GAMEOVER", 8)
+        pyxel.text(31, 126, "- PRESS ENTER -", 13)
+
+
+App()
