@@ -16,7 +16,7 @@ STAR_COLOR_LOW = 5
 PLAYER_WIDTH = 8
 PLAYER_HEIGHT = 8
 PLAYER_SPEED = 2
-BULLET_WIDTH = 8
+BULLET_WIDTH = 2
 BULLET_HEIGHT = 8
 BULLET_COLOR = 11
 BULLET_SPEED = 4
@@ -186,6 +186,7 @@ class Blast:
 
     def draw(self):
         '''Draws the blast in the updated position'''
+        _log.info("In Blast draw")
         pyxel.circ(self.x, self.y, self.radius, BLAST_COLOR_IN)
         pyxel.circb(self.x, self.y, self.radius,BLAST_COLOR_OUT)
 
@@ -206,7 +207,7 @@ class App:
              "0c0880c0"
              ])
         pyxel.image(0).set(
-            0,
+            8,
             0,
             ["00088000",
              "00ee1200",
@@ -222,7 +223,7 @@ class App:
         self.scene = SCENE_TITLE
         self.score = 0
         self.background = Background()
-        self.player = Player(pyxel.width/2, pyxel.height -20)
+        self.player = Player(pyxel.width/2, pyxel.height - 20)
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -247,17 +248,17 @@ class App:
         '''Updates the main play content'''
         if pyxel.frame_count % 6 == 0:
             Enemy(random() * (pyxel.width - PLAYER_WIDTH), 0)
-        for enemy in enemy_list:
-            for bullet in bullet_list:
+        for e in enemy_list:
+            for b in bullet_list:
                 # Determine if enemy hit by bullet
-                if (enemy.x + enemy.w > bullet.x
-                    and bullet.x + bullet.w > enemy.x
-                    and enemy.y + enemy.h > bullet.y
-                    and bullet.y + bullet.h > enemy.y):
-                    enemy.alive = False
-                    bullet.alive = False
-                    blast_list.append(Blast(enemy.x + ENEMY_WIDTH/2,
-                                            enemy.y + ENEMY_HEIGHT/2))
+                if (e.x + e.w > b.x
+                    and b.x + b.w > e.x
+                    and e.y + e.h > b.y
+                    and b.y + b.h > e.y):
+                    e.alive = False
+                    b.alive = False
+                    blast_list.append(Blast(e.x + ENEMY_WIDTH/2,
+                                            e.y + ENEMY_HEIGHT/2))
                     pyxel.play(1, 1)
                     self.score += 10
         for enemy in enemy_list:
