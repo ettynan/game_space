@@ -24,7 +24,7 @@ ENEMY_WIDTH = 8
 ENEMY_HEIGHT = 8
 ENEMY_SPEED = 1.5
 BLAST_START_RADIUS = 1
-BLAST_END_RADIUS = 1
+BLAST_END_RADIUS = 8
 BLAST_COLOR_IN = 7
 BLAST_COLOR_OUT = 10
 enemy_list = []
@@ -188,7 +188,7 @@ class Blast:
         '''Draws the blast in the updated position'''
         _log.info("In Blast draw")
         pyxel.circ(self.x, self.y, self.radius, BLAST_COLOR_IN)
-        pyxel.circb(self.x, self.y, self.radius,BLAST_COLOR_OUT)
+        pyxel.circb(self.x, self.y, self.radius, BLAST_COLOR_OUT)
 
 class App:
     '''Game window and game play'''
@@ -267,6 +267,7 @@ class App:
                and enemy.x + enemy.w > self.player.x
                and self.player.y + self.player.h > enemy.y
                and enemy.y + enemy.h > self.player.y):
+                enemy.alive = False
                 blast_list.append(Blast(self.player.x + PLAYER_WIDTH/2,
                                         self.player.y + PLAYER_HEIGHT/2))
                 pyxel.play(1, 1)
@@ -312,6 +313,7 @@ class App:
 
     def draw_title_scene(self):
         '''Draw the initial title scene'''
+        _log.info("In draw title scene")
         pyxel.text(35, 66, "Start Game", pyxel.frame_count %16)
         pyxel.text(31, 126, "- PRESS ENTER -", 13)
 
