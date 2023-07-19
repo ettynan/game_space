@@ -3,6 +3,7 @@
 from random import random
 import pyxel
 from data.logger import get_logger
+from blast.model import Blast
 
 # User interface
 _log = get_logger(__name__)
@@ -23,13 +24,13 @@ BULLET_SPEED = 4
 ENEMY_WIDTH = 8
 ENEMY_HEIGHT = 8
 ENEMY_SPEED = 1.5
-BLAST_START_RADIUS = 1
-BLAST_END_RADIUS = 8
-BLAST_COLOR_IN = 7
-BLAST_COLOR_OUT = 10
+# BLAST_START_RADIUS = 1
+# BLAST_END_RADIUS = 8
+# BLAST_COLOR_IN = 7
+# BLAST_COLOR_OUT = 10
 enemy_list = []
 bullet_list = []
-blast_list = []
+# blast_list = []
 
 
 def update_list(list):
@@ -167,28 +168,28 @@ class Enemy:
         _log.info("In enemy draw")
         pyxel.blt(self.x, self.y, 0, 8, 0, self.w * self.dir, self.h, 0)
 
-class Blast:
-    '''Destructive blast'''
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.radius = BLAST_START_RADIUS
-        self.alive = True
+# class Blast:
+#     '''Destructive blast'''
+#     def __init__(self, x, y):
+#         self.x = x
+#         self.y = y
+#         self.radius = BLAST_START_RADIUS
+#         self.alive = True
 
-        blast_list.append(self)
+#         blast_list.append(self)
 
-    def update(self):
-        '''Updates the position of the blast'''
-        self.radius += 1
+#     def update(self):
+#         '''Updates the position of the blast'''
+#         self.radius += 1
 
-        if self.radius > BLAST_END_RADIUS:
-            self.alive = False
+#         if self.radius > BLAST_END_RADIUS:
+#             self.alive = False
 
-    def draw(self):
-        '''Draws the blast in the updated position'''
-        _log.info("In Blast draw")
-        pyxel.circ(self.x, self.y, self.radius, BLAST_COLOR_IN)
-        pyxel.circb(self.x, self.y, self.radius, BLAST_COLOR_OUT)
+#     def draw(self):
+#         '''Draws the blast in the updated position'''
+#         _log.info("In Blast draw")
+#         pyxel.circ(self.x, self.y, self.radius, BLAST_COLOR_IN)
+#         pyxel.circb(self.x, self.y, self.radius, BLAST_COLOR_OUT)
 
 class App:
     '''Game window and game play'''
@@ -257,7 +258,7 @@ class App:
                     and b.y + b.h > e.y):
                     e.alive = False
                     b.alive = False
-                    blast_list.append(Blast(e.x + ENEMY_WIDTH/2,
+                    Blast.blast_list.append(Blast(e.x + ENEMY_WIDTH/2,
                                             e.y + ENEMY_HEIGHT/2))
                     pyxel.play(1, 1)
                     self.score += 10
@@ -268,26 +269,26 @@ class App:
                and self.player.y + self.player.h > enemy.y
                and enemy.y + enemy.h > self.player.y):
                 enemy.alive = False
-                blast_list.append(Blast(self.player.x + PLAYER_WIDTH/2,
+                Blast.blast_list.append(Blast(self.player.x + PLAYER_WIDTH/2,
                                         self.player.y + PLAYER_HEIGHT/2))
                 pyxel.play(1, 1)
                 self.scene = SCENE_GAMEOVER
             self.player.update()
             update_list(bullet_list)
             update_list(enemy_list)
-            update_list(blast_list)
+            update_list(Blast.blast_list)
             cleanup_list(enemy_list)
             cleanup_list(bullet_list)
-            cleanup_list(blast_list)
+            cleanup_list(Blast.blast_list)
 
     def update_gameover_scene(self):
         '''Update game over scene'''
         update_list(bullet_list)
         update_list(enemy_list)
-        update_list(blast_list)
+        update_list(Blast.blast_list)
         cleanup_list(enemy_list)
         cleanup_list(bullet_list)
-        cleanup_list(blast_list)
+        cleanup_list(Blast.blast_list)
         if pyxel.btnp(pyxel.KEY_RETURN):
             self.scene = SCENE_PLAY
             self.player.x = pyxel.width/2
@@ -295,7 +296,7 @@ class App:
             self.score = 0
             enemy_list.clear()
             bullet_list.clear()
-            blast_list.clear()
+            Blast.blast_list.clear()
 
     def draw(self):
         '''Draw the scene based on circumstance'''
@@ -323,13 +324,13 @@ class App:
         self.player.draw()
         draw_list(bullet_list)
         draw_list(enemy_list)
-        draw_list(blast_list)
+        draw_list(Blast.blast_list)
 
     def draw_gameover_scene(self):
         '''Prepare effects for gameover scene'''
         draw_list(bullet_list)
         draw_list(enemy_list)
-        draw_list(blast_list)
+        draw_list(Blast.blast_list)
         pyxel.text(43, 66, "GAMEOVER", 8)
         pyxel.text(31, 126, "- PRESS ENTER -", 13)
 

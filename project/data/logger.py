@@ -1,4 +1,4 @@
-'''Logger model for logging information '''
+'''Logger model for logging information in app.log'''
 import logging
 import logging.config
 from os import path
