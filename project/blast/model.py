@@ -1,6 +1,5 @@
 '''A blast in a shooter game in the vein of Space Invaders'''
 
-from random import random
 import pyxel
 from data.logger import get_logger
 
