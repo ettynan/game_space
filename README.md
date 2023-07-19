@@ -1,7 +1,7 @@
 # Space Invaders Clone - Pyxel Edition
 
 ## Overview
-#### This project is a simple clone of the classic arcade game, Space Invaders, developed with Pyxel, a retro game development environment in Python. Follows Calvin Robinson's project in [Ultimate Linux Projects](https://freemagazines.top/ultimate-linux-projects-2nd-edition-2023) with small changes such as using KEY_RETURN instead KEY_ENTER and using modules instead of a single file. Uses logging as well
+#### This project is a simple clone of the classic arcade game, Space Invaders, developed with Pyxel, a retro game development environment in Python. Follows Calvin Robinson's project in [Ultimate Linux Projects](https://freemagazines.top/ultimate-linux-projects-2nd-edition-2023) with small changes and using modules instead of a single file. Uses logging as well.
 
 ## Requirments
 - Python 3.7 or later
