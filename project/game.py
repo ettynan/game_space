@@ -4,35 +4,18 @@ from random import random
 import pyxel
 from data.logger import get_logger
 from blast.model import Blast
+from bullet.model import Bullet
+from enemy.model import Enemy, ENEMY_WIDTH, ENEMY_HEIGHT
+from background.model import Background
+from player.model import Player, PLAYER_WIDTH, PLAYER_HEIGHT
 
-# User interface
 _log = get_logger(__name__)
 
 SCENE_TITLE = 0
 SCENE_PLAY = 1
 SCENE_GAMEOVER = 2
-STAR_COUNT = 100
-STAR_COLOR_HIGH = 12
-STAR_COLOR_LOW = 5
-PLAYER_WIDTH = 8
-PLAYER_HEIGHT = 8
-PLAYER_SPEED = 2
-BULLET_WIDTH = 2
-BULLET_HEIGHT = 8
-BULLET_COLOR = 11
-BULLET_SPEED = 4
-ENEMY_WIDTH = 8
-ENEMY_HEIGHT = 8
-ENEMY_SPEED = 1.5
-# BLAST_START_RADIUS = 1
-# BLAST_END_RADIUS = 8
-# BLAST_COLOR_IN = 7
-# BLAST_COLOR_OUT = 10
-enemy_list = []
-bullet_list = []
-# blast_list = []
 
-
+# User interface
 def update_list(list):
     '''Takes in a list and updates it'''
     for elem in list:
@@ -52,144 +35,6 @@ def cleanup_list(list):
             list.pop(i)
         else:
             i += 1
-
-
-class Background:
-    '''Setting up the game environment'''
-    def __init__(self):
-        self.star_list = []
-        for i in range(STAR_COUNT):
-            self.star_list.append(
-                (random() * pyxel.width,random() *
-                 pyxel.height,random() * 1.5 + 1)
-            )
-
-    def update(self):
-        '''Updates the background'''
-        for i, (x, y, speed) in enumerate(self.star_list):
-            y += speed
-            if y >= pyxel.height:
-                y -= pyxel.height
-            self.star_list[i] = (x, y, speed)
-
-    def draw(self):
-        '''Draws the new background'''
-        for (x, y, speed) in self.star_list:
-            pyxel.pset(x, y, STAR_COLOR_HIGH if speed > 1.8 else STAR_COLOR_LOW)
-
-class Player:
-    '''Player for the game'''
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.w = PLAYER_WIDTH
-        self.h = PLAYER_HEIGHT
-        self.alive = True
-
-    def update(self):
-        '''Updates the player position based on direction'''
-        if pyxel.btn(pyxel.KEY_LEFT):
-            self.x -= PLAYER_SPEED
-        if pyxel.btn(pyxel.KEY_RIGHT):
-            self.x += PLAYER_SPEED
-        if pyxel.btn(pyxel.KEY_UP):
-            self.y -= PLAYER_SPEED
-        if pyxel.btn(pyxel.KEY_DOWN):
-            self.y += PLAYER_SPEED
-        self.x = max(self.x, 0)
-        self.x = min(self.x, pyxel.width - self.w)
-        self.y = max(self.y, 0)
-        self.y = min(self.y, pyxel.height - self.h)
-
-        if pyxel.btnp(pyxel.KEY_SPACE):
-            Bullet(self.x + (PLAYER_WIDTH - BULLET_WIDTH)/ 2,
-                   self.y - BULLET_HEIGHT/2)
-
-            pyxel.play(0, 0)
-
-    def draw(self):
-        '''Draws the updated player'''
-        _log.info("In player draw")
-        pyxel.blt(self.x, self.y, 0, 0, 0, self.w, self.h, 0)
-
-class Bullet:
-    '''Bullet to shoot the invaders'''
-    _log.info("In bullet")
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.w = BULLET_WIDTH
-        self.h = BULLET_HEIGHT
-        self.alive = True
-
-        bullet_list.append(self)
-
-    def update(self):
-        '''Updates the bullet position'''
-        self.y -= BULLET_SPEED
-
-        if self.y + self.h - 1 < 0:
-            self.alive = False
-
-    def draw(self):
-        '''Draws the bullet in the updated position'''
-        _log.info("In bullet draw")
-        pyxel.rect(self.x, self.y, self.w, self.h, BULLET_COLOR)
-
-class Enemy:
-    '''Enemy to be stopped'''
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.w = ENEMY_WIDTH
-        self.h = ENEMY_HEIGHT
-        self.dir = 1
-        self.alive = True
-        self.offset = int(random() * 60)
-
-        enemy_list.append(self)
-
-    def update(self):
-        '''Updates the position of the enemy'''
-        if (pyxel.frame_count + self.offset) % 60 < 30:
-            self.x += ENEMY_SPEED
-            self.dir = 1
-        else:
-            self.x -= ENEMY_SPEED
-            self.dir = -1
-
-        self.y += ENEMY_SPEED
-
-        if self.y > pyxel.height - 1:
-            self.alive = False
-
-    def draw(self):
-        '''Draws the enemy in the new position'''
-        _log.info("In enemy draw")
-        pyxel.blt(self.x, self.y, 0, 8, 0, self.w * self.dir, self.h, 0)
-
-# class Blast:
-#     '''Destructive blast'''
-#     def __init__(self, x, y):
-#         self.x = x
-#         self.y = y
-#         self.radius = BLAST_START_RADIUS
-#         self.alive = True
-
-#         blast_list.append(self)
-
-#     def update(self):
-#         '''Updates the position of the blast'''
-#         self.radius += 1
-
-#         if self.radius > BLAST_END_RADIUS:
-#             self.alive = False
-
-#     def draw(self):
-#         '''Draws the blast in the updated position'''
-#         _log.info("In Blast draw")
-#         pyxel.circ(self.x, self.y, self.radius, BLAST_COLOR_IN)
-#         pyxel.circb(self.x, self.y, self.radius, BLAST_COLOR_OUT)
 
 class App:
     '''Game window and game play'''
@@ -249,8 +94,8 @@ class App:
         '''Updates the main play content'''
         if pyxel.frame_count % 6 == 0:
             Enemy(random() * (pyxel.width - PLAYER_WIDTH), 0)
-        for e in enemy_list:
-            for b in bullet_list:
+        for e in Enemy.enemy_list:
+            for b in Bullet.bullet_list:
                 # Determine if enemy hit by bullet
                 if (e.x + e.w > b.x
                     and b.x + b.w > e.x
@@ -262,7 +107,7 @@ class App:
                                             e.y + ENEMY_HEIGHT/2))
                     pyxel.play(1, 1)
                     self.score += 10
-        for enemy in enemy_list:
+        for enemy in Enemy.enemy_list:
             # Determine if player hit by enemy itself
             if(self.player.x + self.player.w > enemy.x
                and enemy.x + enemy.w > self.player.x
@@ -274,28 +119,28 @@ class App:
                 pyxel.play(1, 1)
                 self.scene = SCENE_GAMEOVER
             self.player.update()
-            update_list(bullet_list)
-            update_list(enemy_list)
+            update_list(Bullet.bullet_list)
+            update_list(Enemy.enemy_list)
             update_list(Blast.blast_list)
-            cleanup_list(enemy_list)
-            cleanup_list(bullet_list)
+            cleanup_list(Enemy.enemy_list)
+            cleanup_list(Bullet.bullet_list)
             cleanup_list(Blast.blast_list)
 
     def update_gameover_scene(self):
         '''Update game over scene'''
-        update_list(bullet_list)
-        update_list(enemy_list)
+        update_list(Bullet.bullet_list)
+        update_list(Enemy.enemy_list)
         update_list(Blast.blast_list)
-        cleanup_list(enemy_list)
-        cleanup_list(bullet_list)
+        cleanup_list(Enemy.enemy_list)
+        cleanup_list(Bullet.bullet_list)
         cleanup_list(Blast.blast_list)
         if pyxel.btnp(pyxel.KEY_RETURN):
             self.scene = SCENE_PLAY
             self.player.x = pyxel.width/2
             self.player.y = pyxel.height - 20
             self.score = 0
-            enemy_list.clear()
-            bullet_list.clear()
+            Enemy.enemy_list.clear()
+            Bullet.bullet_list.clear()
             Blast.blast_list.clear()
 
     def draw(self):
@@ -322,14 +167,14 @@ class App:
         '''Prepare effects for game play'''
         _log.info("Draw play scene")
         self.player.draw()
-        draw_list(bullet_list)
-        draw_list(enemy_list)
+        draw_list(Bullet.bullet_list)
+        draw_list(Enemy.enemy_list)
         draw_list(Blast.blast_list)
 
     def draw_gameover_scene(self):
         '''Prepare effects for gameover scene'''
-        draw_list(bullet_list)
-        draw_list(enemy_list)
+        draw_list(Bullet.bullet_list)
+        draw_list(Enemy.enemy_list)
         draw_list(Blast.blast_list)
         pyxel.text(43, 66, "GAMEOVER", 8)
         pyxel.text(31, 126, "- PRESS ENTER -", 13)
