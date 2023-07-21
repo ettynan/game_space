@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from background.model import Background
+from project.background.model import Background
 
 STAR_COUNT = 10
 STAR_COLOR_HIGH = 8
