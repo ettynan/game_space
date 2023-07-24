@@ -1,11 +1,12 @@
 '''Module to test the project.background.model module'''
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 from background.model import Background
 
 @pytest.fixture
 def mock_background():
-    with patch('background.model.random') as mock_random, patch('background.model.pyxel') as mock_pyxel:
+    with patch('background.model.random') as mock_random, \
+        patch('background.model.pyxel') as mock_pyxel:
         mock_pyxel.width = 100
         mock_pyxel.height = 100
         mock_random.return_value = 0.5
