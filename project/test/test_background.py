@@ -4,10 +4,6 @@ import unittest
 from unittest.mock import patch
 from background.model import Background
 
-# STAR_COUNT = 100
-# STAR_COLOR_HIGH = 8
-# STAR_COLOR_LOW = 4
-
 class TestBackground(unittest.TestCase):
 
     @patch('background.model.random')
