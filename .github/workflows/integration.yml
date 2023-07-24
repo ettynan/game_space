@@ -16,13 +16,17 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-
+    env:
+      PROJECT_PATH: /Users/user/Desktop/game_space/project
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Build
+        run: go build -v ./...
+        working-directory: ${{ github.workspace }}/${{ env.PROJECT_PATH }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
