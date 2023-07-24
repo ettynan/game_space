@@ -27,8 +27,9 @@ class TestBlast(unittest.TestCase):
         self.blast.update()
         self.assertFalse(self.blast.alive)
 
-    @patch('blast.model.pyxel.circ')
     @patch('blast.model.pyxel.circb')
+    @patch('blast.model.pyxel.circ')
+    # Decorators are applied from the bottom up, check order
     def test_draw(self, mock_circ, mock_circb):
         '''Testing the draw method'''
         self.blast.draw()
@@ -36,6 +37,7 @@ class TestBlast(unittest.TestCase):
                                           Blast.BLAST_COLOR_IN)
         mock_circb.assert_called_once_with(self.x, self.y, self.blast.radius,
                                            Blast.BLAST_COLOR_OUT)
+
 
 if __name__ == '__main__':
     unittest.main()
