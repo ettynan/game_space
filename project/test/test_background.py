@@ -4,9 +4,9 @@ import unittest
 from unittest.mock import patch
 from background.model import Background
 
-STAR_COUNT = 10
-STAR_COLOR_HIGH = 8
-STAR_COLOR_LOW = 4
+# STAR_COUNT = 100
+# STAR_COLOR_HIGH = 8
+# STAR_COLOR_LOW = 4
 
 class TestBackground(unittest.TestCase):
 
@@ -26,7 +26,7 @@ class TestBackground(unittest.TestCase):
         mock_random.return_value = 0.5
 
         background = Background()
-        self.assertEqual(len(background.star_list), STAR_COUNT)
+        self.assertEqual(len(background.star_list), background.STAR_COUNT)
         for star in background.star_list:
             x, y, speed = star
             self.assertEqual(x, 0.5 * mock_pyxel.width)
@@ -49,7 +49,8 @@ class TestBackground(unittest.TestCase):
         mock_pyxel.pset.assert_called()
         for star in self.background.star_list:
             x, y, speed = star
-            color = STAR_COLOR_HIGH if speed > 1.8 else STAR_COLOR_LOW
+            color = self.background.STAR_COLOR_HIGH if speed > 1.8 \
+                else self.background.STAR_COLOR_LOW
             mock_pyxel.pset.assert_any_call(x, y, color)
 
 if __name__ == "__main__":
