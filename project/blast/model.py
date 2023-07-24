@@ -10,8 +10,6 @@ BLAST_END_RADIUS = 8
 class Blast:
     '''Destructive blast'''
     blast_list = []
-    BLAST_COLOR_IN = 7
-    BLAST_COLOR_OUT = 10
 
     def __init__(self, x, y):
         self.x = x

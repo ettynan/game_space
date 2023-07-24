@@ -5,15 +5,16 @@ import pyxel
 from data.logger import get_logger
 
 _log = get_logger(__name__)
-STAR_COUNT = 100
-STAR_COLOR_HIGH = 12
-STAR_COLOR_LOW = 5
 
 class Background:
     '''Setting up the game environment'''
     def __init__(self):
         self.star_list = []
-        for i in range(STAR_COUNT):
+        self.STAR_COUNT = 100
+        self.STAR_COLOR_HIGH = 12
+        self.STAR_COLOR_LOW = 5
+
+        for i in range(self.STAR_COUNT):
             self.star_list.append(
                 (random() * pyxel.width,random() *
                  pyxel.height,random() * 1.5 + 1)
@@ -30,4 +31,5 @@ class Background:
     def draw(self):
         '''Draws the new background'''
         for (x, y, speed) in self.star_list:
-            pyxel.pset(x, y, STAR_COLOR_HIGH if speed > 1.8 else STAR_COLOR_LOW)
+            pyxel.pset(x, y, self.STAR_COLOR_HIGH if speed > 1.8
+                       else self.STAR_COLOR_LOW)

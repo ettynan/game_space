@@ -34,9 +34,9 @@ class TestBlast(unittest.TestCase):
         '''Testing the draw method'''
         self.blast.draw()
         mock_circ.assert_called_once_with(self.x, self.y, self.blast.radius,
-                                          Blast.BLAST_COLOR_IN)
+                                          self.blast.BLAST_COLOR_IN)
         mock_circb.assert_called_once_with(self.x, self.y, self.blast.radius,
-                                           Blast.BLAST_COLOR_OUT)
+                                           self.blast.BLAST_COLOR_OUT)
 
 
 if __name__ == '__main__':
