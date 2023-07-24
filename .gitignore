@@ -91,3 +91,6 @@ ipython_config.py
 # venv files created when python -m venv . use python -m venv .venv instead
 pyvenv.cfg
 activate/*
+
+# Misc
+*.DS_Store
