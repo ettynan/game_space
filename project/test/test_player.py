@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from project.player.model import Player, PLAYER_SPEED, PLAYER_WIDTH, \
+from player.model import Player, PLAYER_SPEED, PLAYER_WIDTH, \
     PLAYER_HEIGHT
 
 class TestPlayer(unittest.TestCase):
