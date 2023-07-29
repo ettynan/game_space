@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, PropertyMock, MagicMock
-from bullet.model import Bullet, BULLET_SPEED, BULLET_HEIGHT, BULLET_SPEED
+from bullet.model import Bullet, BULLET_SPEED, BULLET_HEIGHT
 
 class TestBullet(unittest.TestCase):
     def setUp(self):
@@ -35,7 +35,8 @@ class TestBullet(unittest.TestCase):
         '''Test the bullet drawing'''
         with patch('bullet.model.pyxel', self.mock_pyxel):
             self.bullet.draw()
-        self.mock_pyxel.rect.assert_called_once_with(self.bullet.x, self.bullet.y, self.bullet.w, self.bullet.h, 11)
+        self.mock_pyxel.rect.assert_called_once_with(self.bullet.x, \
+            self.bullet.y, self.bullet.w, self.bullet.h, 11)
 
 if __name__ == '__main__':
     unittest.main()
