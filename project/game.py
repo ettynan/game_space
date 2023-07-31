@@ -39,37 +39,47 @@ def cleanup_list(list):
 class App:
     '''Game window and game play'''
     def __init__(self):
-        pyxel.init(120, 160, title="All your base are belong to us!")
-        pyxel.image(0).set(
-            0,
-            0,
-            ["00c00c00",
-             "0c7007c0",
-             "0c7007c0",
-             "c703b07c",
-             "77033077",
-             "785cc587",
-             "85c77c58",
-             "0c0880c0"
-             ])
-        pyxel.image(0).set(
-            8,
-            0,
-            ["00088000",
-             "00ee1200",
-             "08e2b180",
-             "02882820",
-             "00222200",
-             "00012280",
-             "08208008",
-             "80008000"
-             ])
-        pyxel.sound(0).set("a3a2c1a1", "p", "7", "s", 5)
-        pyxel.sound(1).set("a3a2c2c2", "n", "7742", "s", 10)
-        self.scene = SCENE_TITLE
-        self.score = 0
-        self.background = Background()
-        self.player = Player(pyxel.width/2, pyxel.height - 20)
+        self.setup()
+
+    def setup(self):
+        try:
+            pyxel.init(120, 160, title="All your base are belong to us!")
+            pyxel.image(0).set(
+                0,
+                0,
+                ["00c00c00",
+                "0c7007c0",
+                "0c7007c0",
+                "c703b07c",
+                "77033077",
+                "785cc587",
+                "85c77c58",
+                "0c0880c0"
+                ])
+            pyxel.image(0).set(
+                8,
+                0,
+                ["00088000",
+                "00ee1200",
+                "08e2b180",
+                "02882820",
+                "00222200",
+                "00012280",
+                "08208008",
+                "80008000"
+                ])
+            pyxel.sound(0).set("a3a2c1a1", "p", "7", "s", 5)
+            pyxel.sound(1).set("a3a2c2c2", "n", "7742", "s", 10)
+            self.scene = SCENE_TITLE
+            self.score = 0
+            self.background = Background()
+            self.player = Player(pyxel.width/2, pyxel.height - 20)
+
+        except RuntimeError:
+            print('Pyxel is already initialized')
+            pass
+
+    def run(self):
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -179,5 +189,6 @@ class App:
         pyxel.text(43, 66, "GAMEOVER", 8)
         pyxel.text(31, 126, "- PRESS ENTER -", 13)
 
-
-App()
+if __name__ == "__main__":
+    app = App()
+    app.run()
