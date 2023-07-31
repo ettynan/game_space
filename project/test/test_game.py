@@ -1,7 +1,6 @@
 import unittest
 import pyxel
-from game import App, SCENE_TITLE, SCENE_PLAY, SCENE_GAMEOVER
-from unittest.mock import patch
+from game import App, SCENE_PLAY
 
 def setup_module(module):
     pyxel.init(120, 160, title="All your base are belong to us!")
