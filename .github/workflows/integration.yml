@@ -38,11 +38,8 @@ jobs:
           ruff --format=github --select=E9,F63,F7,F82 --target-version=py37 .
           # default set of ruff rules with GitHub Annotations
           ruff --format=github --target-version=py37 .
-      - name: Do commands
-        run: |
-          source venv/bin/activate
-          cd project
       - name: Test with unittest
         run: |
           source venv/bin/activate
+          cd project
           python -m unittest discover
