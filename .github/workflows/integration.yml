@@ -26,20 +26,22 @@ jobs:
         run: python -m venv venv
       - name: Install dependencies
         run: |
+          source venv/bin/activate
           python -m pip install --upgrade pip
           pip install ruff
           if [ -f requirements.txt ]; then pipx install -r requirements.txt; fi
-          sudo pip3 install pyxel
+          pipx install pyxel
       - name: Lint with ruff
         run: |
+          source venv/bin/activate
           # stop the build if there are Python syntax errors or undefined names
           ruff --format=github --select=E9,F63,F7,F82 --target-version=py37 .
           # default set of ruff rules with GitHub Annotations
           ruff --format=github --target-version=py37 .
-      - name: Do commands
+      - name: Test with unittest
         run: |
           source venv/bin/activate
           cd project
-      # - name: Test with unittest
-      #   run:
-      #     python -m unittest discover
+          pip list
+          pipx list
+          # python -m unittest discover
