@@ -39,7 +39,7 @@ jobs:
       - name: Do commands
         run: |
           source venv/bin/activate
-          ls
+          cd project
       # - name: Test with unittest
       #   run:
       #     python -m unittest discover
