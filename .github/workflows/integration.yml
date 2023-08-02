@@ -30,7 +30,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff
           if [ -f requirements.txt ]; then pipx install -r requirements.txt; fi
-          pipx install pyxel
+          pip install pyxel
       - name: Lint with ruff
         run: |
           source venv/bin/activate
