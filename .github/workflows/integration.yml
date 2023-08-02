@@ -42,6 +42,8 @@ jobs:
         run: |
           source venv/bin/activate
           cd project
+          ls
           pip list
+          ls
           pipx list
           # python -m unittest discover
