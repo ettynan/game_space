@@ -1,7 +1,7 @@
 '''Module to test the project.background.model module'''
 import unittest
 from unittest.mock import patch
-from project.background.model import Background
+from background.model import Background
 
 class TestBackground(unittest.TestCase):
 
