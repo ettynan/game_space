@@ -43,7 +43,7 @@ class App:
 
     def setup(self):
         try:
-            pyxel.init(120, 160)
+            pyxel.init(120, 160, title="All your base are belong to us!")
             pyxel.image(0).set(
                 0,
                 0,

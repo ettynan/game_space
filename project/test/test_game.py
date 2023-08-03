@@ -3,7 +3,7 @@ import pyxel
 from game import App, SCENE_PLAY, SCENE_GAMEOVER, SCENE_TITLE
 
 def setup_module(module):
-    pyxel.init(120, 160)
+    pyxel.init(120, 160, title="All your base are belong to us!")
 
 class TestApp(unittest.TestCase):
     @classmethod

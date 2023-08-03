@@ -33,6 +33,8 @@ jobs:
           pip install pyxel
           sudo apt-get install git curl libsdl2-mixer-2.0-0 libsdl2-image-2.0-0
           sudo apt-get install git curl libsdl2-2.0-0
+          sudo apt-get install xorg-dev
+          # sudo apt-get install ia32-libs
       - name: Lint with ruff
         run: |
           source venv/bin/activate
