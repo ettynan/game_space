@@ -1,8 +1,9 @@
 import unittest
 import os
-os.environ["SDL_VIDEODRIVER"] = "dummy"
 import pyxel
 from game import App, SCENE_PLAY, SCENE_GAMEOVER, SCENE_TITLE
+
+os.environ["SDL_VIDEODRIVER"] = "dummy"
 
 def setup_module(module):
     import os
