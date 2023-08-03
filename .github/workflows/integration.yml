@@ -32,7 +32,7 @@ jobs:
           if [ -f requirements.txt ]; then pipx install -r requirements.txt; fi
           pip install pyxel
           apt-get install git curl libsdl2-mixer-2.0-0 libsdl2-image-2.0-0
-          apt-get install git curl libsdl2-2.0-0
+          sudo apt-get install git curl libsdl2-2.0-0
       - name: Lint with ruff
         run: |
           source venv/bin/activate
