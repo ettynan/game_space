@@ -31,6 +31,7 @@ jobs:
           pip install ruff
           if [ -f requirements.txt ]; then pipx install -r requirements.txt; fi
           pip install pyxel
+          pip install pysdl2
       - name: Lint with ruff
         run: |
           source venv/bin/activate
