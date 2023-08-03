@@ -1,8 +1,12 @@
 import unittest
+import os
+os.environ["SDL_VIDEODRIVER"] = "dummy"
 import pyxel
 from game import App, SCENE_PLAY, SCENE_GAMEOVER, SCENE_TITLE
 
 def setup_module(module):
+    import os
+    os.environ["SDL_VIDEODRIVER"] = "dummy"
     pyxel.init(120, 160, title="All your base are belong to us!")
 
 class TestApp(unittest.TestCase):
