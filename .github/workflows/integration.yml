@@ -47,4 +47,5 @@ jobs:
           source venv/bin/activate
           cd project
           pip list
+          echo $DISPLAY
           python -m unittest discover
