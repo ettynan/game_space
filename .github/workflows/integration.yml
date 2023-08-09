@@ -28,8 +28,8 @@ jobs:
         run: |
           source venv/bin/activate
           python -m pip install --upgrade pip
-          pip install ruff
           if [ -f requirements.txt ]; then pipx install -r requirements.txt; fi
+          pip install ruff
           pip install pyxel
           sudo apt-get install libsdl2-mixer-2.0-0 libsdl2-image-2.0-0 libsdl2-2.0-0
       - name: Lint with ruff
