@@ -1,4 +1,4 @@
-'''A bullet in a shooter game in the vein of Space Invaders'''
+'''A bullet in a Space Invaders type game'''
 
 import pyxel
 from data.logger import get_logger

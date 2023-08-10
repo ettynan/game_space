@@ -1,4 +1,4 @@
-'''An enemy in a shooter game in the vein of Space Invaders'''
+'''An enemy in a Space Invaders type game'''
 
 from random import random
 import pyxel
